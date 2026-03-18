@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/library/bootstrap.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/library/bootstrap.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Sora:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <title>PixelPoint — Reviews</title>
+    <style>
+        :root {
+            --azul: #0970BA;
+            --azul-escuro: #04417A;
+            --azul-brilho: #1C8FDE;
+            --bg: #0D1117;
+            --bg2: #131920;
+            --card-bg: #161E27;
+            --borda: rgba(9,112,186,0.20);
+            --txt: #E8EDF3;
+            --txt-muted: #7A8A9A;
+            --accent: #00C6FF;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--txt);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* NAVBAR */
+        .bg-navbar {
+            background: linear-gradient(135deg, var(--azul-escuro), var(--azul), #1C8FDE) !important;
+            box-shadow: 0 2px 24px rgba(9,112,186,0.40);
+            position: sticky; top: 0; z-index: 100;
+        }
+        .bg-navbar .container-fluid { background: transparent !important; padding-block: 0.6rem; }
+        .logo { max-width: 160px; filter: brightness(0) invert(1); }
+        .navbar-nav a {
+            font-family: 'Sora', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.80) !important;
+            padding: 0.4rem 0.9rem !important;
+            border-radius: 6px;
+            transition: background 0.15s, color 0.15s;
+            position: relative;
+        }
+        .navbar-nav a:hover, .navbar-nav a.active {
+            color: #fff !important;
+            background: rgba(255,255,255,0.14);
+            text-decoration: none !important;
+        }
+        .navbar-toggler { border: 1.5px solid rgba(255,255,255,0.4) !important; border-radius: 6px !important; }
+        .navbar-toggler-icon { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255,255,255,0.9)' stroke-linecap='round' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important; }
+        .icons-nav { list-style: none; display: flex; align-items: center; gap: 0.5rem; padding: 0; margin: 0; }
+        .icons-nav li img { width: 22px; opacity: 0.8; filter: brightness(0) invert(1); transition: opacity 0.15s; cursor: pointer; }
+        .icons-nav li img:hover { opacity: 1; }
+
+        /* PAGE HEADER */
+        .page-header {
+            padding: 3.5rem 0 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: 'REVIEWS';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(5rem, 18vw, 14rem);
+            color: rgba(9,112,186,0.06);
+            white-space: nowrap;
+            pointer-events: none;
+            letter-spacing: 0.08em;
+        }
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem);
+            letter-spacing: 0.12em;
+            color: #fff;
+            text-align: center;
+            position: relative;
+        }
+        .page-header h1 span { color: var(--accent); }
+        .page-header .subtitle {
+            text-align: center;
+            color: var(--txt-muted);
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            margin-top: 0.5rem;
+            position: relative;
+        }
+
+        /* REVIEW CARDS */
+        .reviews-list { padding-bottom: 4rem; }
+
+        .review-card {
+            background: var(--card-bg);
+            border: 1px solid var(--borda);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+            animation: fadeUp 0.5s ease both;
+        }
+        .review-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(9,112,186,0.22);
+            border-color: rgba(9,112,186,0.50);
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .review-card:nth-child(2) { animation-delay: 0.1s; }
+        .review-card:nth-child(3) { animation-delay: 0.2s; }
+
+        .review-card .thumb-wrap {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+        }
+        .review-card .thumb-wrap img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .review-card:hover .thumb-wrap img { transform: scale(1.05); }
+        .review-card .thumb-wrap::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, var(--card-bg) 0%, transparent 50%);
+        }
+
+        .review-card .tag {
+            display: inline-block;
+            background: var(--azul);
+            color: #fff;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.2rem 0.65rem;
+            border-radius: 4px;
+            margin-bottom: 0.6rem;
+        }
+
+        .review-card .body { padding: 1.4rem 1.5rem 1.8rem; }
+        .review-card h3 {
+            font-family: 'Sora', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: #fff;
+            margin-bottom: 0.7rem;
+        }
+        .review-card p {
+            font-size: 0.88rem;
+            color: var(--txt-muted);
+            line-height: 1.65;
+        }
+        .review-card .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 1.1rem;
+            font-family: 'Sora', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-decoration: none;
+            transition: gap 0.15s;
+        }
+        .review-card .read-more:hover { gap: 0.7rem; }
+        .review-card .read-more::after { content: '→'; }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--borda);
+            margin: 0;
+        }
+
+        /* FOOTER */
+        .rodape {
+            background: linear-gradient(160deg, var(--azul-escuro), var(--azul), #1C8FDE);
+            border-radius: 24px 24px 0 0;
+            padding: 2.5rem 1rem;
+            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .rodape::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.04), transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04), transparent 40%);
+        }
+        .rodape * { position: relative; }
+        .separador-rodape { border: none; border-top: 1px solid rgba(255,255,255,0.18); opacity: 1; margin: 0 auto; }
+        .rodape img.logo { max-width: 130px; filter: brightness(0) invert(1); }
+        .footer-icons img { width: 26px; filter: brightness(0) invert(1); opacity: 0.75; transition: opacity 0.15s; }
+        .footer-icons img:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-md bg-navbar mt-0 py-0">
+            <div class="container-fluid py-2">
+                <a class="navbar-brand" href="#"><img src="assets/images/logo.png" class="logo" alt="PixelPoint"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarScroll">
+                    <hr class="border-2 border-white mb-2 d-md-none">
+                    <ul class="navbar-nav mx-auto my-2 my-md-0">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Início</a></li>
+                        <li class="nav-item"><a class="nav-link" href="noticia-principal.html">Notícias</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="reviews.html">Reviews</a></li>
+                        <li class="nav-item"><a class="nav-link" href="lancamento.html">Lançamentos</a></li>
+                    </ul>
+                    <hr class="border-2 border-white mb-2 d-md-none">
+                    <ul class="icons-nav d-flex text-center align-items-center justify-content-center">
+                        <li class="nav-item me-2"><img src="assets/images/search.png" alt="Buscar"></li>
+                        <li class="nav-item me-2"><img src="assets/images/g2.png" alt=""></li>
+                        <li class="nav-item"><img src="assets/images/user.png" alt="Perfil"></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main style="flex: 1;">
+        <div class="page-header">
+            <div class="container">
+                <h1>PIXEL <span>REVIEWS</span></h1>
+                <p class="subtitle">Análises honestas para jogadores de verdade</p>
+            </div>
+        </div>
+
+        <div class="container reviews-list">
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="review-card">
+                        <div class="thumb-wrap">
+                            <img src="assets/images/review1.png" alt="Wolverine PS5">
+                        </div>
+                        <div class="body">
+                            <span class="tag">Review</span>
+                            <h3>Wolverine no PS5 retorna e Silksong surpreende por R$60!</h3>
+                            <p>No episódio #193 do Flow Games, rumores sobre o retorno de Marvel's Wolverine no PS5 e a revelação do preço acessível de Hollow Knight: Silksong agitam a comunidade.</p>
+                            <a href="#" class="read-more">Ler análise</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="review-card">
+                        <div class="thumb-wrap">
+                            <img src="assets/images/review2.png" alt="Xbox Game Pass">
+                        </div>
+                        <div class="body">
+                            <span class="tag">Review</span>
+                            <h3>Setembro cheio de novidades no Xbox e Game Pass!</h3>
+                            <p>O mês de setembro promete fortes emoções para os fãs de Xbox! Novos jogos chegam ao Game Pass, trazendo grandes lançamentos e surpresas para os assinantes.</p>
+                            <a href="#" class="read-more">Ler análise</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="review-card">
+                        <div class="thumb-wrap">
+                            <img src="assets/images/review3.png" alt="Skins Champions">
+                        </div>
+                        <div class="body">
+                            <span class="tag">Review</span>
+                            <h3>Less revela a verdade sobre as skins Champions 2025!</h3>
+                            <p>Less comenta sua experiência e arrependimentos com as skins Champions, destacando porque algumas só foram reconhecidas como as melhores anos depois.</p>
+                            <a href="#" class="read-more">Ler análise</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 rodape">
+                    <div class="row justify-content-center">
+                        <div class="col-5 col-md-2 my-3 text-center">
+                            <img src="assets/images/logo.png" class="logo w-100" alt="PixelPoint">
+                        </div>
+                        <div class="col-12"><hr class="separador-rodape w-75"></div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-10 my-3 text-center footer-icons d-flex justify-content-center gap-3 flex-wrap">
+                            <img src="assets/images/insta.png" alt="Instagram">
+                            <img src="assets/images/facebook.png" alt="Facebook">
+                            <img src="assets/images/youtube.png" alt="YouTube">
+                            <img src="assets/images/tiktok.png" alt="TikTok">
+                            <img src="assets/images/linkedln.png" alt="LinkedIn">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
